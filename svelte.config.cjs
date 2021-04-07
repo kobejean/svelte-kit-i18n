@@ -20,6 +20,10 @@ module.exports = {
 			ssr: {
 				noExternal: Object.keys(pkg.dependencies || {})
 			}
+		},
+
+		files: {
+			hooks: 'src/hooks.ts'
 		}
 	}
 };

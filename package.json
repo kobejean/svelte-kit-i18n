@@ -25,5 +25,8 @@
 		"prettier-plugin-svelte": "^2.2.0",
 		"eslint-config-prettier": "^8.1.0"
 	},
-	"type": "module"
+	"type": "module",
+	"dependencies": {
+		"svelte-i18n": "^3.3.9"
+	}
 }
