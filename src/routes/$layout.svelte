@@ -1,26 +1,41 @@
-<script context="module">
-	// import { preloadLocale } from '$lib/utils/i18n/preload';
-	// import { waitLocale } from 'svelte-i18n';
-	/**
-	 * @type {import('@sveltejs/kit').Load}
-	 */
-	export async function load({ page, fetch, session, context }) {
-		// await preloadLocale(fetch, page, session);
-		// await waitLocale();
-		return {
-			props: {
-				locale: session.locale
-			}
-		};
-	}
-</script>
-
 <script>
+	import { page, session } from '$app/stores';
 	import '../app.scss';
 
-	export let locale;
+	const translations = {
+		en: {
+			home: 'Home',
+			about: 'About',
+			events: 'Events'
+		},
+		ja: {
+			home: 'ホーム',
+			about: '情報',
+			events: 'イベント'
+		}
+	};
+
+	$: t = translations[$session.locale];
 </script>
 
-{locale}
+<code>
+	Session: {JSON.stringify($session)}
+	Page: {''}
+	- Host: {$page.host}
+	- Path: {$page.path}
+	- Query: {JSON.stringify($page.query)}
+	- Params: {JSON.stringify($page.params)}
+</code>
 
+<br />
+<br />
+
+<a href="/en" lang="en">English</a>
+<a href="/ja" lang="ja">日本語</a>
+
+<br />
+
+<a href="/{$session.locale}">{t.home}</a>
+<a href="/{$session.locale}/about">{t.about}</a>
+<a href="/{$session.locale}/events/event">{t.events}</a>
 <slot />
