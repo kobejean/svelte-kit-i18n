@@ -16,10 +16,9 @@ export function getSession({ context }) {
 }
 
 /** @type {import('@sveltejs/kit').Handle} */
-export async function handle(request, render) {
+export async function handle({ request, render }) {
 	addLocaleRelativeRoutePath(request);
 	const response = await render(request);
 	addLocaleToResponseBody(request, response);
-
 	return response;
 }

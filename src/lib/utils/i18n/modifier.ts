@@ -7,7 +7,7 @@ export const addLocaleToResponseBody = (request, response) => {
 };
 
 export const addLocaleRelativeRoutePath = (request) => {
-	const firstSegment = request.path.match(LOCALE_PATHNAME_REGEX)[1];
+	const firstSegment = request.path && request.path.match(LOCALE_PATHNAME_REGEX)[1];
 	if (SUPPORTED_LOCALE.has(firstSegment)) {
 		request.path = request.path.replace(LOCALE_PATHNAME_REGEX, '/');
 	}

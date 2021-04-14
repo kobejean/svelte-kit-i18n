@@ -1,21 +1,22 @@
+<script context="module">
+	import { preloadLocale } from '$lib/utils/i18n/preload';
+
+	export async function load({ session }) {
+		try {
+			await preloadLocale(session.locale);
+			return {};
+		} catch (error) {
+			return { status: 500, error };
+		}
+	}
+</script>
+
 <script>
+	import { locale, _ } from 'svelte-i18n';
 	import { page, session } from '$app/stores';
 	import '../app.scss';
 
-	const translations = {
-		en: {
-			home: 'Home',
-			about: 'About',
-			events: 'Events'
-		},
-		ja: {
-			home: 'ホーム',
-			about: '情報',
-			events: 'イベント'
-		}
-	};
-
-	$: t = translations[$session.locale];
+	$: if ($locale !== $session.locale && $session.locale) locale.set($session.locale);
 </script>
 
 <code>
@@ -30,12 +31,12 @@
 <br />
 <br />
 
-<a href="/en" lang="en">English</a>
-<a href="/ja" lang="ja">日本語</a>
+<a href="/en{$page.path}" lang="en">{$_('locale.en')}</a>
+<a href="/ja{$page.path}" lang="ja">{$_('locale.ja')}</a>
 
 <br />
 
-<a href="/{$session.locale}">{t.home}</a>
-<a href="/{$session.locale}/about">{t.about}</a>
-<a href="/{$session.locale}/events/event">{t.events}</a>
+<a href="/{$locale}">{$_('home.title')}</a>
+<a href="/{$locale}/about">{$_('about.title')}</a>
+<a href="/{$locale}/events/event">{$_('events.title')}</a>
 <slot />

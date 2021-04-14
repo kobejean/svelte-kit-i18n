@@ -1,6 +1,6 @@
 import { get } from 'svelte/store';
 import { browser } from '$app/env';
-import { locale as localeStore, init, register } from 'svelte-i18n';
+import { locale as localeStore, init, register, waitLocale } from 'svelte-i18n';
 import { SUPPORTED_LOCALE, LOCALE_IMPORTS, FALLBACK_LOCAL } from '$lib/utils/i18n/constants';
 
 // register locale lifes
@@ -30,9 +30,8 @@ const preloadAllLanguageData = () => {
  * @param {object} page - The `preload` function `page` parameter.
  * @param {object} session - The `preload` function `session` parameter.
  */
-export const preloadLocale = async (fetch, page, session) => {
+export const preloadLocale = async (locale) => {
 	const currentLocale = get(localeStore);
-	const { locale } = page.params;
 
 	preloadAllLanguageData();
 
@@ -44,4 +43,6 @@ export const preloadLocale = async (fetch, page, session) => {
 		// if locale is currently null we probably missed initialization
 		init({ fallbackLocale: FALLBACK_LOCAL, initialLocale: locale });
 	}
+
+	await waitLocale();
 };
