@@ -1,7 +1,7 @@
 <script lang="ts">
 	let count = 0;
 
-	const increment = (): void => {
+	const increment = () => {
 		count += 1;
 	};
 </script>
@@ -10,7 +10,7 @@
 	Clicks: {count}
 </button>
 
-<style lang="scss">
+<style>
 	button {
 		font-family: inherit;
 		font-size: inherit;
@@ -25,6 +25,7 @@
 		font-variant-numeric: tabular-nums;
 	}
 
+	button:focus,
 	button:hover {
 		border: 3px solid #ff3e00;
 	}

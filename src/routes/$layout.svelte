@@ -14,7 +14,7 @@
 <script>
 	import { locale, _ } from 'svelte-i18n';
 	import { page, session } from '$app/stores';
-	import '../app.scss';
+	import '../app.css';
 
 	$: if ($locale !== $session.locale && $session.locale) locale.set($session.locale);
 </script>
