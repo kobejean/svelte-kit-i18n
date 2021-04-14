@@ -1,6 +1,6 @@
 import { get } from 'svelte/store';
 import { browser } from '$app/env';
-import { locale as localeStore, init, register, waitLocale } from 'svelte-i18n';
+import { locale as localeStore, init, register, waitLocale } from 'svelte-i18n/dist/runtime.esm';
 import { SUPPORTED_LOCALE, LOCALE_IMPORTS, FALLBACK_LOCAL } from '$lib/utils/i18n/constants';
 
 // register locale lifes

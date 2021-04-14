@@ -12,7 +12,7 @@
 </script>
 
 <script>
-	import { locale, _ } from 'svelte-i18n';
+	import { locale, _ } from 'svelte-i18n/dist/runtime.esm';
 	import { page, session } from '$app/stores';
 	import '../app.css';
 
