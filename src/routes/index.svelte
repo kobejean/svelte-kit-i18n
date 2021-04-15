@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
 	import Counter from '$lib/Counter.svelte';
 </script>
 
