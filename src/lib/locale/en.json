@@ -1,0 +1,15 @@
+{
+	"home": {
+		"title": "Home"
+	},
+	"about": {
+		"title": "About"
+	},
+	"events": {
+		"title": "Events"
+	},
+	"locale": {
+		"en": "🇺🇸 English",
+		"ja": "🇯🇵 日本語"
+	}
+}
