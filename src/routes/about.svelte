@@ -7,8 +7,8 @@
 </script>
 
 <svelte:head>
-	<title>{$_('home.title')}</title>
+	<title>{$_('about.title')}</title>
 </svelte:head>
 
-<h1>{$_('home.heading')}</h1>
-<p>{@html $_('home.instructions')}</p>
+<h1>{$_('about.heading')}</h1>
+<p>{@html $_('about.description')}</p>
