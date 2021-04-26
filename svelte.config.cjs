@@ -1,6 +1,7 @@
 const sveltePreprocess = require('svelte-preprocess');
 const node = require('@sveltejs/adapter-node');
 const pkg = require('./package.json');
+const precompileIntl = require('svelte-intl-precompile/sveltekit-plugin');
 
 /** @type {import('@sveltejs/kit').Config} */
 module.exports = {
@@ -20,7 +21,15 @@ module.exports = {
 		vite: {
 			ssr: {
 				noExternal: Object.keys(pkg.dependencies || {})
-			}
+			},
+			plugins: [precompileIntl('src/lib/i18n/locale')]
+		},
+
+		prerender: {
+			crawl: true,
+			enabled: true,
+			force: false,
+			pages: ['*', '/ja', '/en']
 		}
 	}
 };
