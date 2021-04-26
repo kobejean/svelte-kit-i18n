@@ -15,11 +15,15 @@ module.exports = {
 			plugins: [precompileIntl('src/lib/i18n/locale')]
 		},
 
-		prerender: {
-			crawl: true,
-			enabled: true,
-			force: false,
-			pages: ['*', '/ja', '/en']
+		alternateRoutes: (segments) => {
+			const locales = ['ja', 'en'];
+			return [
+				segments,
+				...locales.map((locale) => [
+					[{ content: locale, dynamic: false, spread: false }],
+					...segments
+				])
+			];
 		}
 	}
 };

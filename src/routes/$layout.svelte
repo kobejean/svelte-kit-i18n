@@ -14,11 +14,19 @@
 	import { locale, _ } from 'svelte-intl-precompile';
 	import { page, session } from '$app/stores';
 	import { base } from '$app/paths';
+	import { translatePath } from '$lib/i18n/path';
+	import { SUPPORTED_LOCALE } from '$lib/i18n/constants';
+
 	$: if ($locale !== $session.locale && $session.locale) locale.set($session.locale);
+
+	const locales = [...SUPPORTED_LOCALE];
 </script>
 
-<a href="{base}/en{$page.path}" lang="en">{$_('locale.en')}</a>
-<a href="{base}/ja{$page.path}" lang="ja">{$_('locale.ja')}</a>
+{#each locales as locale}
+	<a href="{base}/{translatePath($page.path, locale)}" lang={locale} rel="external"
+		>{$_(`locale.${locale}`)}</a
+	>
+{/each}
 
 <br />
 
