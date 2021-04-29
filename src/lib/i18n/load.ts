@@ -1,10 +1,14 @@
 import { get } from 'svelte/store';
 import { browser } from '$app/env';
 import { locale as localeStore, init, register, waitLocale } from 'svelte-intl-precompile';
-import { SUPPORTED_LOCALE, LOCALE_IMPORTS, FALLBACK_LOCAL } from '$lib/i18n/constants';
+import { SUPPORTED_LOCALE, LOCALE_IMPORTS, FALLBACK_LOCALE } from '$lib/i18n/constants';
+import { dotNotation } from '$lib/utils/object';
 
 // register locale lifes
-Object.entries(LOCALE_IMPORTS).forEach(([locale, fn]) => register(locale, fn));
+Object.entries(LOCALE_IMPORTS).forEach(([locale, fn]) =>
+	// convert to dot notation after import
+	register(locale, () => fn().then((imported) => dotNotation(imported.default)))
+);
 
 /**
  * Preloads all language data on server-side.
@@ -39,7 +43,7 @@ export const loadLocale = async (locale) => {
 
 	if (!currentLocale) {
 		// if locale is currently null we probably missed initialization
-		init({ fallbackLocale: FALLBACK_LOCAL, initialLocale: locale });
+		init({ fallbackLocale: FALLBACK_LOCALE, initialLocale: locale });
 	}
 
 	await waitLocale();

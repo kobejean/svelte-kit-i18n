@@ -1,0 +1,23 @@
+{
+	"home": {
+		"title": "Home",
+		"nav.title": "Home",
+		"heading": "Welcome to SvelteKit i18n Template",
+		"instructions": "Visit <a href=\"https://kit.svelte.dev\">kit.svelte.dev</a> to read the documentation."
+	},
+	"about": {
+		"title": "About",
+		"nav.title": "About",
+		"heading": "About SvelteKit i18n Template",
+		"description": "This is a template for SvelteKit projects using i18n."
+	},
+	"blog": {
+		"title": "Blog",
+		"nav.title": "Blog",
+		"heading": "Blog"
+	},
+	"locale": {
+		"en": "🇺🇸 English",
+		"ja": "🇯🇵 日本語"
+	}
+}

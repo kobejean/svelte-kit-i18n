@@ -1,8 +1,8 @@
-export const FALLBACK_LOCAL = 'ja';
+export const FALLBACK_LOCALE = 'ja';
 
 export const LOCALE_IMPORTS = {
-	en: () => import(`$lib/i18n/locale/en.js`),
-	ja: () => import(`$lib/i18n/locale/ja.js`)
+	en: () => import(`$lib/i18n/locale/en.json`),
+	ja: () => import(`$lib/i18n/locale/ja.json`)
 };
 
 export const SUPPORTED_LOCALE = new Set(Object.keys(LOCALE_IMPORTS));

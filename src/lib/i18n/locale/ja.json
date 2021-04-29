@@ -1,0 +1,23 @@
+{
+	"home": {
+		"title": "ホーム",
+		"nav.title": "ホーム",
+		"heading": "SvelteKit i18n テンプレートへようこそ",
+		"instructions": "ドキュメントを読むには、<a href=\"https://kit.svelte.dev\">kit.svelte.dev</a>にアクセスしてください。"
+	},
+	"about": {
+		"title": "情報",
+		"nav.title": "情報",
+		"heading": "SvelteKit i18n テンプレートについて",
+		"description": "これは、i18nを使用するSvelteKitプロジェクトのテンプレートです。"
+	},
+	"blog": {
+		"title": "ブログ",
+		"nav.title": "ブログ",
+		"heading": "ブログ"
+	},
+	"locale": {
+		"en": "🇺🇸 English",
+		"ja": "🇯🇵 日本語"
+	}
+}

@@ -16,13 +16,14 @@ module.exports = {
 		},
 
 		alternateRoutes: (segments) => {
-			const locales = ['ja', 'en'];
+			// const locales = ['ja', 'en'];
 			return [
 				segments,
-				...locales.map((locale) => [
-					[{ content: locale, dynamic: false, spread: false }],
-					...segments
-				])
+				[[{ content: 'locale', dynamic: true, spread: false }], ...segments]
+				// ...locales.map((locale) => [
+				// 	[{ content: locale, dynamic: false, spread: false }],
+				// 	...segments
+				// ])
 			];
 		}
 	}

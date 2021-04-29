@@ -1,10 +1,10 @@
 <script>
-	import { _ } from 'svelte-intl-precompile';
+	import { t } from 'svelte-intl-precompile';
 </script>
 
 <svelte:head>
-	<title>{$_('home.title')}</title>
+	<title>{$t('home.title')}</title>
 </svelte:head>
 
-<h1>{$_('home.heading')}</h1>
-<p>{@html $_('home.instructions')}</p>
+<h1>{$t('home.heading')}</h1>
+<p>{@html $t('home.instructions')}</p>

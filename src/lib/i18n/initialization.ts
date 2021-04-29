@@ -1,5 +1,5 @@
 import { browser } from '$app/env';
-import { FALLBACK_LOCAL, SUPPORTED_LOCALE, LOCALE_PATHNAME_REGEX } from '$lib/i18n/constants';
+import { FALLBACK_LOCALE, SUPPORTED_LOCALE, LOCALE_PATHNAME_REGEX } from '$lib/i18n/constants';
 
 /**
  * Gets pathname from location.pathname if code is client-side.
@@ -106,6 +106,8 @@ const getAvailableLocaleFromUserLanguage = (req) => {
  */
 export const getInitialLocale = (req) => {
 	return (
-		getAvailableLocaleFromPathname(req) || getAvailableLocaleFromUserLanguage(req) || FALLBACK_LOCAL
+		getAvailableLocaleFromPathname(req) ||
+		getAvailableLocaleFromUserLanguage(req) ||
+		FALLBACK_LOCALE
 	);
 };

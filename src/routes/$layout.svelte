@@ -5,7 +5,7 @@
 			await loadLocale(session.locale);
 			return {};
 		} catch (error) {
-			return { status: 500, error };
+			return { status: 500, error: 'Error Occurred' };
 		}
 	}
 </script>
@@ -13,23 +13,18 @@
 <script>
 	import { locale, _ } from 'svelte-intl-precompile';
 	import { page, session } from '$app/stores';
-	import { base } from '$app/paths';
-	import { translatePath } from '$lib/i18n/path';
-	import { SUPPORTED_LOCALE } from '$lib/i18n/constants';
+	import { syncLocale } from '$lib/i18n/sync';
+	import LanguageAlternateLinks from '$lib/components/LanguageAlternateLinks.svelte';
+	import NavigationBar from '$lib/components/NavigationBar/index.svelte';
 
-	$: if ($locale !== $session.locale && $session.locale) locale.set($session.locale);
-
-	const locales = [...SUPPORTED_LOCALE];
+	$: syncLocale(locale, $page, $session);
 </script>
 
-{#each locales as locale}
-	<a href="{base}/{translatePath($page.path, locale)}" lang={locale} rel="external"
-		>{$_(`locale.${locale}`)}</a
-	>
-{/each}
+<svelte:head>
+	<LanguageAlternateLinks />
+</svelte:head>
 
-<br />
+<!-- {JSON.stringify($page, null, 2)} -->
 
-<a href="{base}/{$locale}">{$_('home.title')}</a>
-<a href="{base}/{$locale}/about">{$_('about.title')}</a>
+<NavigationBar />
 <slot />
