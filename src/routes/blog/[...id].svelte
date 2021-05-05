@@ -1,11 +1,9 @@
 <script context="module">
 	import { getPost } from './_posts';
 
-	export async function load({ page }) {
-		const post = await getPost(page.params.id, page.params.locale);
-		if (post) {
-			return { props: { post } };
-		}
+	export async function load({ page: { params } }) {
+		const post = await getPost(params.id, params.locale);
+		if (post) return { props: { post } };
 	}
 </script>
 

@@ -1,6 +1,6 @@
 <script context="module">
-	export async function load({ page, fetch }) {
-		const res = await fetch(`/${page.params.locale}/blog.json`);
+	export async function load({ page: { params }, fetch }) {
+		const res = await fetch(`/${params.locale}/blog.json`);
 		if (res.ok) {
 			const { posts } = await res.json();
 			return { props: { posts } };
@@ -9,6 +9,7 @@
 </script>
 
 <script>
+	import { localeBase } from '$lib/i18n/path';
 	import { t } from 'svelte-intl-precompile';
 
 	export let posts;
@@ -24,7 +25,7 @@
 	<article>
 		<header>
 			<h2>
-				<a sveltekit:prefetch href={post.path}>
+				<a sveltekit:prefetch href="{$localeBase}/blog/{post.id}">
 					{post.title}
 				</a>
 			</h2>

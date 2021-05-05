@@ -1,67 +1,83 @@
 import { FALLBACK_LOCALE } from '$lib/i18n/constants';
-import { map, mapValues, groupBy, keys, keyBy, filter, isNil, pick, get } from 'lodash-es';
+import {
+	map,
+	mapValues,
+	groupBy,
+	omit,
+	keys,
+	keyBy,
+	filter,
+	isNil,
+	get,
+	truncate
+} from 'lodash-es';
 
-const IMPORT_PATH_REGEX = /^\.\/(\d{4})-(\d{2})-(\d{2})-(.+)\/([a-z]{2}-?[A-Z]{0,2})\.svelte$/;
+const IMPORT_PATH_REGEX = /^\.\/(\d{4})-(\d{2})-(\d{2})-(.+)\/([a-z]{2}(?:-[A-Z]{2})?)\.svelte$/;
+function getPostTranslations() {
+	// extract meta data from import path
+	let posts = mapValues(import.meta.glob('./*/*.svelte'), (importer, importPath) => {
+		if (!IMPORT_PATH_REGEX.test(importPath)) return null;
 
-let posts = mapValues(import.meta.glob('./*/*.svelte'), (importer, importPath) => {
-	if (!IMPORT_PATH_REGEX.test(importPath)) return null;
+		const [, year, month, day, slug, locale] = importPath.match(IMPORT_PATH_REGEX);
+		return {
+			importer,
+			id: `${year}/${month}/${day}/${slug}`,
+			date: `${year}-${month}-${day}`,
+			locale
+		};
+	});
+	// filter out files that don't match regex
+	posts = filter(posts, (post) => !isNil(post));
+	// group files by post id so that translations of the same post are grouped together
+	posts = groupBy(posts, 'id');
+	// final data mapping
+	posts = mapValues(posts, (translations) => {
+		// key translations by locale
+		translations = keyBy(translations, 'locale');
+		// retrieve post data
+		const { id, date } = translations[FALLBACK_LOCALE];
+		// just keep data we need for translations
+		translations = mapValues(translations, (translation) => omit(translation, ['id', 'date']));
+		return {
+			id,
+			date,
+			translations
+		};
+	});
+	return posts;
+}
 
-	const [, year, month, day, slug, locale] = importPath.match(IMPORT_PATH_REGEX);
-	return {
-		importer,
-		id: `${year}/${month}/${day}/${slug}`,
-		date: `${year}-${month}-${day}`,
-		path: `/${locale}/blog/${year}/${month}/${day}/${slug}`,
-		locale
-	};
-});
+export const POST_TRANSLATIONS = getPostTranslations();
 
-// remove posts that do not match regex
-posts = filter(posts, (post) => !isNil(post));
-// group files
-posts = groupBy(posts, 'id');
-// final data mapping
-posts = mapValues(posts, (translations) => {
-	// key translations by locale
-	translations = keyBy(translations, 'locale');
-	// retrieve post data
-	const { id, date } = translations[FALLBACK_LOCALE];
-	// just keep data we need for translations
-	translations = mapValues(translations, (translation) =>
-		pick(translation, ['locale', 'importer', 'path'])
-	);
-	return {
-		id,
-		date,
-		translations
-	};
-});
+const HTML_TO_TEXT_REGEX = /<[^>]*>/g;
+function getSummary(html) {
+	const summary = html.replace(HTML_TO_TEXT_REGEX, '');
+	return truncate(summary, { length: 150 });
+}
 
 export async function getPost(id, locale) {
-	const meta = get(posts, [id]);
-	const date = get(meta, ['date']);
+	const meta = get(POST_TRANSLATIONS, [id]);
 	const translation = get(meta, ['translations', locale], {});
 	if (translation.importer) {
-		const post = await translation.importer();
+		const imported = await translation.importer();
+		const component = imported.default;
+		const importedMeta = omit(imported, ['default']);
 		return {
-			component: post.default,
-			title: post.title,
-			date,
-			author: post.author,
-			path: translation.path,
-			locale: translation.locale
+			component,
+			...omit(meta, ['translations']),
+			...omit(translation, ['importer']),
+			...importedMeta
 		};
 	}
 }
 
-const HTML_TO_TEXT_REGEX = /<[^>]*>/g;
 export async function getPosts(locale) {
-	const resolved = await Promise.all(map(keys(posts), async (id) => getPost(id, locale)));
-	const filtered = filter(resolved, (post) => !isNil(post));
-	return map(filtered, ({ component, ...post }) => {
+	let posts = await Promise.all(map(keys(POST_TRANSLATIONS), async (id) => getPost(id, locale)));
+	posts = filter(posts, (post) => !isNil(post));
+	posts = map(posts, ({ component, ...post }) => {
 		const { html } = component.render();
-		const summary = html.replace(HTML_TO_TEXT_REGEX, '');
+		const summary = getSummary(html);
 		return { ...post, summary };
 	});
+	return posts;
 }
-export default posts;

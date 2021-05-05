@@ -10,7 +10,7 @@ import { getPosts } from './_posts';
 export async function get({ params }) {
 	const { locale } = params;
 
-	const posts = await getPosts(locale); //cache.get(locale);
+	const posts = await getPosts(locale);
 
 	if (posts) {
 		return {

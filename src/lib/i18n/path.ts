@@ -1,6 +1,7 @@
 import { page } from '$app/stores';
 import { base } from '$app/paths';
 import { derived } from 'svelte/store';
+import { locale } from 'svelte-intl-precompile';
 import { SUPPORTED_LOCALE } from './constants';
 
 export const getPathWithoutLocale = (path) => {
@@ -18,8 +19,8 @@ export const translatePath = (path, locale) => {
 	return `${locale}${getPathWithoutLocale(path)}`;
 };
 
-export const localeBase = derived(page, ($page) =>
-	SUPPORTED_LOCALE.has($page.params.locale) ? `${base}/${$page.params.locale}` : base
+export const localeBase = derived(locale, ($locale) =>
+	SUPPORTED_LOCALE.has($locale) ? `${base}/${$locale}` : base
 );
 
 export const localeRelativePath = derived(page, ({ path }) => getPathWithoutLocale(path));

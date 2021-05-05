@@ -1,6 +1,10 @@
 <script context="module">
 	import { loadLocale } from '$lib/i18n/load';
-	export async function load({ session }) {
+
+	export async function load({ page, session }) {
+		if (!page.params.locale) {
+			return { status: 301, redirect: `/${session.locale}${page.path}` };
+		}
 		try {
 			await loadLocale(session.locale);
 			return {};
@@ -24,7 +28,7 @@
 	<LanguageAlternateLinks />
 </svelte:head>
 
-<!-- {JSON.stringify($page, null, 2)} -->
+{JSON.stringify($page, null, 2)}
 
 <NavigationBar />
 <slot />
